@@ -1,123 +1,331 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const LogoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class LogoApp extends StatelessWidget {
+  const LogoApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Company Logo Showcase',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
+        '/': (context) => const LogoShowcaseScreen(),
       },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class LogoShowcaseScreen extends StatefulWidget {
+  const LogoShowcaseScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LogoShowcaseScreen> createState() => _LogoShowcaseScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class _LogoShowcaseScreenState extends State<LogoShowcaseScreen> {
+  String companyName = "Your Company";
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text('Logo Designs', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
+        elevation: 0,
+        centerTitle: true,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              "I've designed a few logo concepts using Flutter. You can use these directly in your app!",
+              style: TextStyle(fontSize: 16, color: Colors.black54),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            
+            // Editable Company Name
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Enter your company name',
+                prefixIcon: const Icon(Icons.business),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
+              onChanged: (value) {
+                setState(() {
+                  companyName = value.isEmpty ? "Your Company" : value;
+                });
+              },
+            ),
+            const SizedBox(height: 32),
+
+            // Concept 1: Modern Tech
+            _buildLogoCard(
+              title: "Concept 1: Modern Tech",
+              logo: ModernTechLogo(companyName: companyName),
+            ),
+            const SizedBox(height: 24),
+
+            // Concept 2: Elegant Corporate
+            _buildLogoCard(
+              title: "Concept 2: Elegant Corporate",
+              logo: ElegantCorporateLogo(companyName: companyName),
+            ),
+            const SizedBox(height: 24),
+
+            // Concept 3: Creative & Playful
+            _buildLogoCard(
+              title: "Concept 3: Creative Studio",
+              logo: CreativeLogo(companyName: companyName),
+            ),
+            const SizedBox(height: 24),
+            
+            // Concept 4: Minimalist
+            _buildLogoCard(
+              title: "Concept 4: Minimalist",
+              logo: MinimalistLogo(companyName: companyName),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _buildLogoCard({required String title, required Widget logo}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey,
+              letterSpacing: 1.2,
+            ),
+          ),
+          const SizedBox(height: 32),
+          logo,
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
+}
+
+// ==========================================
+// LOGO DESIGNS
+// ==========================================
+
+class ModernTechLogo extends StatelessWidget {
+  final String companyName;
+  const ModernTechLogo({super.key, required this.companyName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF00C6FF), Color(0xFF0072FF)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0072FF).withOpacity(0.4),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.rocket_launch_rounded,
+            color: Colors.white,
+            size: 32,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Text(
+          companyName.toUpperCase(),
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
+            color: Color(0xFF1A1A24),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ElegantCorporateLogo extends StatelessWidget {
+  final String companyName;
+  const ElegantCorporateLogo({super.key, required this.companyName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.account_balance,
+          color: Color(0xFF1E3A8A), // Deep Blue
+          size: 48,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          companyName,
+          style: const TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Georgia', // Serif-like fallback
+            color: Color(0xFF1E3A8A),
+            letterSpacing: 0.5,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 4),
+          height: 2,
+          width: 40,
+          color: const Color(0xFFD4AF37), // Gold accent
+        ),
+      ],
+    );
+  }
+}
+
+class CreativeLogo extends StatelessWidget {
+  final String companyName;
+  const CreativeLogo({super.key, required this.companyName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Transform.rotate(
+              angle: 0.2,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF4B2B),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            Transform.rotate(
+              angle: -0.2,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF416C).withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.palette,
+              color: Colors.white,
+              size: 24,
+            ),
+          ],
+        ),
+        const SizedBox(width: 16),
+        Text(
+          companyName,
+          style: const TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w800,
+            fontStyle: FontStyle.italic,
+            color: Color(0xFFFF416C),
+            letterSpacing: -0.5,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class MinimalistLogo extends StatelessWidget {
+  final String companyName;
+  const MinimalistLogo({super.key, required this.companyName});
+
+  @override
+  Widget build(BuildContext context) {
+    // Get first letter for the logo mark
+    String firstLetter = companyName.isNotEmpty ? companyName[0].toUpperCase() : "C";
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black87, width: 3),
+            shape: BoxShape.circle,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            firstLetter,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Text(
+          companyName,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w300, // Light weight for minimalist look
+            letterSpacing: 3.0,
+            color: Colors.black87,
+          ),
+        ),
+      ],
     );
   }
 }
